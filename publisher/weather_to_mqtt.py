@@ -44,6 +44,8 @@ def publish_weather(prefix, data, forecast = False):
         msgs.append({"topic": prefix + "sunrise", "payload": sunset.isoformat(), "retain": True})
         msgs.append({"topic": prefix + "sunset", "payload": sunrise.isoformat(), "retain": True})
 
+    msgs.append({"topic": prefix + "updated", "payload": datetime.now().isoformat()})
+
     publish.multiple(msgs, hostname=SERVER)
 
 APPKEY = ''
