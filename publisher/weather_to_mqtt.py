@@ -13,7 +13,7 @@ def publish_weather(prefix, data, forecast = False):
     wind = data['wind']
     weather = data['weather'][0]
     clouds = data['clouds']['all']
-    rain = data['rain']['3h'] if data['rain'] else 0
+    rain = data['rain']['3h'] if 'rain' in data else 0
 
     msgs = [
             {"topic": prefix + "humidity", "payload": "%s %%" % main['humidity'], "retain": True},
