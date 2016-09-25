@@ -8,7 +8,7 @@ from datetime import datetime
 def kelvin_to_celcius(k):
     return k - 273.15
 
-def publish_weather(prefix, data, forecast = False):
+def publish_weather(prefix, data, forecast=False):
     main = data['main']
     wind = data['wind']
     weather = data['weather'][0]
