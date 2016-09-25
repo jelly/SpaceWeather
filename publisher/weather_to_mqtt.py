@@ -5,8 +5,10 @@ import paho.mqtt.publish as publish
 
 from datetime import datetime
 
+
 def kelvin_to_celcius(k):
     return k - 273.15
+
 
 def publish_weather(prefix, data, forecast=False):
     main = data['main']
@@ -34,8 +36,7 @@ def publish_weather(prefix, data, forecast=False):
             {"topic": prefix + "clouds", "payload": "%s %%" % clouds, "retain": True},
          ]
 
-
-    if forecast: # Unique to normal req
+    if forecast:  # Unique to normal req
         # Fetch sunset/sunrise
         r = requests.get('http://api.openweathermap.org/data/2.5/weather?q=%s&APPID=%s' % (CITY, APPKEY))
 
