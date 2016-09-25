@@ -40,7 +40,7 @@ def publish_weather(prefix, data, forecast = False):
         r = requests.get('http://api.openweathermap.org/data/2.5/weather?q=%s&APPID=%s' % (CITY, APPKEY))
 
         data = r.json()
-        # Check if openweathermap failed 
+        # Check if openweathermap failed
         if data['cod'] != 200:
             return
 
