@@ -7,7 +7,8 @@ from datetime import datetime
 
 
 def kelvin_to_celcius(k):
-    return k - 273.15
+    # Ghetto rounding because I am to lazy to import math
+    return int((k - 273.15)*1000)/1000
 
 
 def publish_weather(prefix, data, forecast=False):
