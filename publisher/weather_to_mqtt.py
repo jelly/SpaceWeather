@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import requests
 import paho.mqtt.publish as publish
@@ -38,7 +38,7 @@ def publish_weather(prefix, data, forecast=False):
 
     if forecast:  # Unique to normal req
         # Fetch sunset/sunrise
-        r = requests.get('http://api.openweathermap.org/data/2.5/weather?q=%s&APPID=%s' % (CITY, APPKEY))
+        r = requests.get('http://api.openweathermap.org/data/2.5/weather?id=%s&APPID=%s' % (LOCATION_ID, APPKEY))
 
         data = r.json()
         # Check if openweathermap failed
@@ -47,21 +47,30 @@ def publish_weather(prefix, data, forecast=False):
 
         sys = data['sys']
 
-        sunset = datetime.fromtimestamp(sys['sunset'])
         sunrise = datetime.fromtimestamp(sys['sunrise'])
-        msgs.append({"topic": prefix + "sunrise", "payload": sunset.isoformat(), "retain": True})
-        msgs.append({"topic": prefix + "sunset", "payload": sunrise.isoformat(), "retain": True})
+        sunset = datetime.fromtimestamp(sys['sunset'])
+        msgs.append({"topic": prefix + "sunrise", "payload": sunrise.isoformat(), "retain": True})
+        msgs.append({"topic": prefix + "sunset",  "payload":  sunset.isoformat(), "retain": True})
 
     msgs.append({"topic": prefix + "updated", "payload": datetime.now().isoformat(), "retain": True})
 
     publish.multiple(msgs, hostname=SERVER)
 
+#  {
+#    "id": 6544252,
+#    "name": "Gemeente Leidschendam-Voorburg",
+#    "country": "NL",
+#    "coord": {
+#      "lon": 4.40139,
+#      "lat": 52.078331
+#    }
+#  },
+LOCATION_ID = '6544252'
 APPKEY = ''
-CITY = 'The Hague'
 SERVER = ''
 
-# api.openweathermap.org/data/2.5/forecast?q=London,us&mode=xml
-r = requests.get('http://api.openweathermap.org/data/2.5/forecast?q=%s&APPID=%s' % (CITY, APPKEY))
+r = requests.get('http://api.openweathermap.org/data/2.5/forecast?id=%s&APPID=%s' % (LOCATION_ID, APPKEY))
+print(r.content)
 data = r.json()
 
 # Get the first two hours
